@@ -5,24 +5,27 @@ import { YourContract } from "../typechain-types";
 describe("YourContract", function () {
   // We define a fixture to reuse the same setup in every test.
 
-  let yourContract: YourContract;
+  let personalFinance: YourContract;
   before(async () => {
     const [owner] = await ethers.getSigners();
     const yourContractFactory = await ethers.getContractFactory("YourContract");
-    yourContract = (await yourContractFactory.deploy(owner.address)) as YourContract;
-    await yourContract.waitForDeployment();
+    personalFinance = (await yourContractFactory.deploy(owner.address)) as YourContract;
+    await personalFinance.waitForDeployment();
   });
 
   describe("Deployment", function () {
-    it("Should have the right message on deploy", async function () {
-      expect(await yourContract.greeting()).to.equal("Building Unstoppable Apps!!!");
-    });
+    it("should add a transaction", async function () {
+      await personalFinance.addTransaction("Salary", "Monthly salary", 1000, true);
+      const transactions = await personalFinance.getTransactions();
+      expect(transactions.length).to.equal(1);
+      expect(transactions[0].description).to.equal("Monthly salary");
+  });
 
-    it("Should allow setting a new message", async function () {
-      const newGreeting = "Learn Scaffold-ETH 2! :)";
-
-      await yourContract.setGreeting(newGreeting);
-      expect(await yourContract.greeting()).to.equal(newGreeting);
-    });
+  it("should return the correct transaction details", async function () {
+      await personalFinance.addTransaction("Groceries", "Weekly groceries", 200, false);
+      const transactions = await personalFinance.getTransactions();
+      expect(transactions[1].amount).to.equal(200);
+      expect(transactions[1].isIncome).to.equal(false);
+  });
   });
 });
