@@ -19,39 +19,42 @@ contract YourContract {
     constructor(address _owner){
         owner=_owner;  
     }
-struct Offer {
+    struct Offer {
+        uint256 id;
         address creator;
         string offeredSkill;
         string requestedSkill;
         bool isActive;
-        uint256 createdAt;
     }
 
     mapping(uint256 => Offer) public offers;
+    mapping(address => uint256[]) public userOffers;
     uint256 public offerCount;
 
     event OfferCreated(uint256 id, address creator, string offeredSkill, string requestedSkill);
-    event OfferAccepted(uint256 id, address acceptor);
-    event OfferCanceled(uint256 id);
+    event OfferUpdated(uint256 id, bool isActive);
 
     function createOffer(string memory offeredSkill, string memory requestedSkill) public {
         offerCount++;
-        offers[offerCount] = Offer(msg.sender, offeredSkill, requestedSkill, true, block.timestamp);
+        offers[offerCount] = Offer(offerCount, msg.sender, offeredSkill, requestedSkill, true);
+        userOffers[msg.sender].push(offerCount);
+
         emit OfferCreated(offerCount, msg.sender, offeredSkill, requestedSkill);
     }
 
-    function acceptOffer(uint256 id) public {
-        Offer storage offer = offers[id];
-        require(offer.isActive, "Offer is not active");
-        // Logic for skill exchange can be implemented here
-        offer.isActive = false;
-        emit OfferAccepted(id, msg.sender);
+    function updateOffer(uint256 id, bool isActive) public {
+        require(offers[id].creator == msg.sender, "Not the offer creator");
+        offers[id].isActive = isActive;
+
+        emit OfferUpdated(id, isActive);
     }
 
-    function cancelOffer(uint256 id) public {
-        Offer storage offer = offers[id];
-        require(msg.sender == offer.creator, "Only creator can cancel the offer");
-        offer.isActive = false;
-        emit OfferCanceled(id);
+    function getUserOffers(address user) public view returns (uint256[] memory) {
+    return userOffers[user];
+}
+
+
+    function getOffer(uint256 id) public view returns (Offer memory) {
+        return offers[id];
     }
 }

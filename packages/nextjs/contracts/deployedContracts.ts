@@ -32,38 +32,6 @@ const deployedContracts = {
             {
               indexed: false,
               internalType: "address",
-              name: "acceptor",
-              type: "address",
-            },
-          ],
-          name: "OfferAccepted",
-          type: "event",
-        },
-        {
-          anonymous: false,
-          inputs: [
-            {
-              indexed: false,
-              internalType: "uint256",
-              name: "id",
-              type: "uint256",
-            },
-          ],
-          name: "OfferCanceled",
-          type: "event",
-        },
-        {
-          anonymous: false,
-          inputs: [
-            {
-              indexed: false,
-              internalType: "uint256",
-              name: "id",
-              type: "uint256",
-            },
-            {
-              indexed: false,
-              internalType: "address",
               name: "creator",
               type: "address",
             },
@@ -84,30 +52,23 @@ const deployedContracts = {
           type: "event",
         },
         {
+          anonymous: false,
           inputs: [
             {
+              indexed: false,
               internalType: "uint256",
               name: "id",
               type: "uint256",
             },
-          ],
-          name: "acceptOffer",
-          outputs: [],
-          stateMutability: "nonpayable",
-          type: "function",
-        },
-        {
-          inputs: [
             {
-              internalType: "uint256",
-              name: "id",
-              type: "uint256",
+              indexed: false,
+              internalType: "bool",
+              name: "isActive",
+              type: "bool",
             },
           ],
-          name: "cancelOffer",
-          outputs: [],
-          stateMutability: "nonpayable",
-          type: "function",
+          name: "OfferUpdated",
+          type: "event",
         },
         {
           inputs: [
@@ -125,6 +86,71 @@ const deployedContracts = {
           name: "createOffer",
           outputs: [],
           stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "id",
+              type: "uint256",
+            },
+          ],
+          name: "getOffer",
+          outputs: [
+            {
+              components: [
+                {
+                  internalType: "uint256",
+                  name: "id",
+                  type: "uint256",
+                },
+                {
+                  internalType: "address",
+                  name: "creator",
+                  type: "address",
+                },
+                {
+                  internalType: "string",
+                  name: "offeredSkill",
+                  type: "string",
+                },
+                {
+                  internalType: "string",
+                  name: "requestedSkill",
+                  type: "string",
+                },
+                {
+                  internalType: "bool",
+                  name: "isActive",
+                  type: "bool",
+                },
+              ],
+              internalType: "struct YourContract.Offer",
+              name: "",
+              type: "tuple",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "address",
+              name: "user",
+              type: "address",
+            },
+          ],
+          name: "getUserOffers",
+          outputs: [
+            {
+              internalType: "uint256[]",
+              name: "",
+              type: "uint256[]",
+            },
+          ],
+          stateMutability: "view",
           type: "function",
         },
         {
@@ -151,6 +177,11 @@ const deployedContracts = {
           name: "offers",
           outputs: [
             {
+              internalType: "uint256",
+              name: "id",
+              type: "uint256",
+            },
+            {
               internalType: "address",
               name: "creator",
               type: "address",
@@ -170,11 +201,6 @@ const deployedContracts = {
               name: "isActive",
               type: "bool",
             },
-            {
-              internalType: "uint256",
-              name: "createdAt",
-              type: "uint256",
-            },
           ],
           stateMutability: "view",
           type: "function",
@@ -187,6 +213,48 @@ const deployedContracts = {
               internalType: "address",
               name: "",
               type: "address",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "id",
+              type: "uint256",
+            },
+            {
+              internalType: "bool",
+              name: "isActive",
+              type: "bool",
+            },
+          ],
+          name: "updateOffer",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "address",
+              name: "",
+              type: "address",
+            },
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          name: "userOffers",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
             },
           ],
           stateMutability: "view",
