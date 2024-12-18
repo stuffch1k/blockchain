@@ -5,24 +5,35 @@ import { YourContract } from "../typechain-types";
 describe("YourContract", function () {
   // We define a fixture to reuse the same setup in every test.
 
-  let yourContract: YourContract;
+  let crowdfunding: YourContract;
   before(async () => {
     const [owner] = await ethers.getSigners();
     const yourContractFactory = await ethers.getContractFactory("YourContract");
-    yourContract = (await yourContractFactory.deploy(owner.address)) as YourContract;
-    await yourContract.waitForDeployment();
+    crowdfunding = (await yourContractFactory.deploy(owner.address)) as YourContract;
+    await crowdfunding.waitForDeployment();
   });
 
   describe("Deployment", function () {
-    it("Should have the right message on deploy", async function () {
-      expect(await yourContract.greeting()).to.equal("Building Unstoppable Apps!!!");
-    });
+    it("should create a campaign", async function () {
+      await crowdfunding.createCampaign(100, 3600);
+      const campaign = await crowdfunding.campaigns(1);
+      expect(campaign.goal).to.equal(100);
+      expect(campaign.deadline).to.be.greaterThan(0);
+  });
 
-    it("Should allow setting a new message", async function () {
-      const newGreeting = "Learn Scaffold-ETH 2! :)";
+  it("should allow investment", async function () {
+      await crowdfunding.createCampaign(100, 3600);
+      await crowdfunding.connect(addr1).investInCampaign(1, { value: ethers.utils.parseEther("1.0") });
+      const campaign = await crowdfunding.campaigns(1);
+      expect(campaign.raisedAmount).to.equal(ethers.utils.parseEther("1.0"));
+  });
 
-      await yourContract.setGreeting(newGreeting);
-      expect(await yourContract.greeting()).to.equal(newGreeting);
-    });
+  it("should complete the campaign when goal is reached", async function () {
+      await crowdfunding.createCampaign(1, 3600);
+      await crowdfunding.connect(addr1).investInCampaign(1, { value: ethers.utils.parseEther("1.0") });
+      await crowdfunding.completeCampaign(1);
+      const campaign = await crowdfunding.campaigns(1);
+      expect(campaign.isCompleted).to.be.true;
+  });
   });
 });
