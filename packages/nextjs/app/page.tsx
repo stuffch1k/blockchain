@@ -119,8 +119,8 @@ export default function Home() {
             <span className="block text-2xl mb-2">Add Skill</span>
           </h2>
         </div>
-        <input className={styles.input} type="text" placeholder="New User Skill" value={newUserSkill} onChange={(e) => setNewUserSkill(e.target.value)} />
-        <button className={styles.button} onClick={addSkill}>Add new Skill</button>
+        <input className="input input-bordered w-full bg-accent" type="text" placeholder="New User Skill" value={newUserSkill} onChange={(e) => setNewUserSkill(e.target.value)} />
+        <button className="btn btn-primary" onClick={addSkill}>Add new Skill</button>
         <hr></hr>
         <div>
           <div className="px-5">
@@ -145,9 +145,9 @@ export default function Home() {
             <span className="block text-2xl mb-2">Create Offer</span>
           </h2>
         </div>
-        <input className={styles.input} type="text" placeholder="Offered Skill" value={offeredSkill} onChange={(e) => setOfferedSkill(e.target.value)} />
-        <input className={styles.input} type="text" placeholder="Requested Skill" value={requestedSkill} onChange={(e) => setRequestedSkill(e.target.value)} />
-        <button className={styles.button} onClick={createOffer}>Create Offer</button>
+        <input className="input input-bordered w-full bg-accent" type="text" placeholder="Offered Skill" value={offeredSkill} onChange={(e) => setOfferedSkill(e.target.value)} />
+        <input className="input input-bordered w-full bg-accent" type="text" placeholder="Requested Skill" value={requestedSkill} onChange={(e) => setRequestedSkill(e.target.value)} />
+        <button className="btn btn-primary" onClick={createOffer}>Create Offer</button>
         <hr></hr>
         <div className="px-5">
           <h2 className="text-center">
@@ -201,7 +201,7 @@ export default function Home() {
                 <td className={styles.td}>{offer.requestedSkill}</td>
                 <td className={styles.td}>{offer.isActive.toString()}</td>
                 <td className={styles.td}>
-                  <button className={styles.button} onClick={() => fulfillOffer(offer.id)}>
+                  <button className="btn btn-primary" onClick={() => fulfillOffer(offer.id)}>
                     Exchange Skills
                   </button>
                 </td>
