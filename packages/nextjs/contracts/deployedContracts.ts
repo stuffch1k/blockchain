@@ -62,6 +62,25 @@ const deployedContracts = {
             },
             {
               indexed: false,
+              internalType: "address",
+              name: "executor",
+              type: "address",
+            },
+          ],
+          name: "OfferFulfilled",
+          type: "event",
+        },
+        {
+          anonymous: false,
+          inputs: [
+            {
+              indexed: false,
+              internalType: "uint256",
+              name: "id",
+              type: "uint256",
+            },
+            {
+              indexed: false,
               internalType: "bool",
               name: "isActive",
               type: "bool",
@@ -69,6 +88,69 @@ const deployedContracts = {
           ],
           name: "OfferUpdated",
           type: "event",
+        },
+        {
+          anonymous: false,
+          inputs: [
+            {
+              indexed: false,
+              internalType: "address",
+              name: "user",
+              type: "address",
+            },
+            {
+              indexed: false,
+              internalType: "string",
+              name: "skill",
+              type: "string",
+            },
+          ],
+          name: "SkillAdded",
+          type: "event",
+        },
+        {
+          anonymous: false,
+          inputs: [
+            {
+              indexed: true,
+              internalType: "address",
+              name: "user1",
+              type: "address",
+            },
+            {
+              indexed: true,
+              internalType: "address",
+              name: "user2",
+              type: "address",
+            },
+            {
+              indexed: false,
+              internalType: "string",
+              name: "skillGiven",
+              type: "string",
+            },
+            {
+              indexed: false,
+              internalType: "string",
+              name: "skillReceived",
+              type: "string",
+            },
+          ],
+          name: "SkillsExchanged",
+          type: "event",
+        },
+        {
+          inputs: [
+            {
+              internalType: "string",
+              name: "skill",
+              type: "string",
+            },
+          ],
+          name: "addSkill",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
         },
         {
           inputs: [
@@ -86,6 +168,59 @@ const deployedContracts = {
           name: "createOffer",
           outputs: [],
           stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "offerId",
+              type: "uint256",
+            },
+          ],
+          name: "fulfillOffer",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [],
+          name: "getAllOffers",
+          outputs: [
+            {
+              components: [
+                {
+                  internalType: "uint256",
+                  name: "id",
+                  type: "uint256",
+                },
+                {
+                  internalType: "address",
+                  name: "creator",
+                  type: "address",
+                },
+                {
+                  internalType: "string",
+                  name: "offeredSkill",
+                  type: "string",
+                },
+                {
+                  internalType: "string",
+                  name: "requestedSkill",
+                  type: "string",
+                },
+                {
+                  internalType: "bool",
+                  name: "isActive",
+                  type: "bool",
+                },
+              ],
+              internalType: "struct YourContract.Offer[]",
+              name: "",
+              type: "tuple[]",
+            },
+          ],
+          stateMutability: "view",
           type: "function",
         },
         {
@@ -145,9 +280,55 @@ const deployedContracts = {
           name: "getUserOffers",
           outputs: [
             {
-              internalType: "uint256[]",
+              components: [
+                {
+                  internalType: "uint256",
+                  name: "id",
+                  type: "uint256",
+                },
+                {
+                  internalType: "address",
+                  name: "creator",
+                  type: "address",
+                },
+                {
+                  internalType: "string",
+                  name: "offeredSkill",
+                  type: "string",
+                },
+                {
+                  internalType: "string",
+                  name: "requestedSkill",
+                  type: "string",
+                },
+                {
+                  internalType: "bool",
+                  name: "isActive",
+                  type: "bool",
+                },
+              ],
+              internalType: "struct YourContract.Offer[]",
               name: "",
-              type: "uint256[]",
+              type: "tuple[]",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "address",
+              name: "user",
+              type: "address",
+            },
+          ],
+          name: "getUserSkills",
+          outputs: [
+            {
+              internalType: "string[]",
+              name: "",
+              type: "string[]",
             },
           ],
           stateMutability: "view",
@@ -253,8 +434,52 @@ const deployedContracts = {
           outputs: [
             {
               internalType: "uint256",
+              name: "id",
+              type: "uint256",
+            },
+            {
+              internalType: "address",
+              name: "creator",
+              type: "address",
+            },
+            {
+              internalType: "string",
+              name: "offeredSkill",
+              type: "string",
+            },
+            {
+              internalType: "string",
+              name: "requestedSkill",
+              type: "string",
+            },
+            {
+              internalType: "bool",
+              name: "isActive",
+              type: "bool",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "address",
+              name: "",
+              type: "address",
+            },
+            {
+              internalType: "uint256",
               name: "",
               type: "uint256",
+            },
+          ],
+          name: "userSkills",
+          outputs: [
+            {
+              internalType: "string",
+              name: "",
+              type: "string",
             },
           ],
           stateMutability: "view",
